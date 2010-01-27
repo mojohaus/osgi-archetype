@@ -46,20 +46,6 @@
             <build>
                 <plugins>
                     <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>exec-maven-plugin</artifactId>
-                        <version>1.1.1</version>
-                        <configuration>
-                            <executable>java</executable>
-                            <arguments>
-                                <argument>-Dfelix.system.properties=file:${project.build.directory}/run.properties</argument>
-                                <argument>-cp</argument>
-                                <argument>${project.build.directory}/felix.jar</argument>
-                                <argument>org.apache.felix.main.Main</argument>
-                            </arguments>
-                        </configuration>
-                    </plugin>
-                    <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-antrun-plugin</artifactId>
                         <version>1.3</version>

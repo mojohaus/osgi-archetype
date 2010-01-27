@@ -19,5 +19,11 @@
         <include>felix.xml</include>
       </includes>
     </fileSet>
+    <fileSet filtered="false" packaged="false">
+      <directory></directory>
+      <includes>
+        <include>nbactions.xml</include>
+      </includes>
+    </fileSet>
   </fileSets>
 </archetype-descriptor>
