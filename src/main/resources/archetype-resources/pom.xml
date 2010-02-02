@@ -39,6 +39,8 @@
     </pluginRepositories>
 
     <dependencies>
+        <!-- netbeans module that enables ogsi support at runtime,
+             now your module can depend on bundles. -->
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-core-netigso</artifactId>
