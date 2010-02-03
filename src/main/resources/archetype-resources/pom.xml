@@ -43,7 +43,7 @@
              now your module can depend on bundles. -->
         <dependency>
             <groupId>org.netbeans.api</groupId>
-            <artifactId>org-netbeans-core-netigso</artifactId>
+            <artifactId>org.netbeans.libs.osgi</artifactId>
             <version>SNAPSHOT</version>
         </dependency>
     </dependencies>
