@@ -64,6 +64,7 @@
                 <extensions>true</extensions>
                 <configuration>
                     <descriptor>src/main/nbm/module.xml</descriptor>
+                    <useOSGiDependencies>true</useOSGiDependencies>
                 </configuration>
             </plugin>
             
