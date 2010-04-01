@@ -76,6 +76,7 @@
                                             felix.auto.install=${urls}
                                             felix.auto.start=file://${project.build.directory}/${project.artifactId}-${project.version}.jar
                                             org.osgi.framework.storage=${project.build.directory}/felix-cache
+                                            org.osgi.framework.bootdelegation=*
                                         </echo>
                                         <echo file="${project.build.directory}/config.properties">
                                             felix.auto.install=${bundles}
