@@ -59,9 +59,12 @@
                                 <configuration>
                                     <tasks>
                                         <property name="plugins" refid="maven.runtime.classpath"/>
-                                        <pathconvert pathsep=" " property="urls">
+                                        <pathconvert pathsep=" " dirsep="/" property="project.build.url">
+                                            <path path="${project.build.directory}"/>
+                                        </pathconvert>
+                                        <pathconvert pathsep='" "' dirsep="/" property="urls">
                                             <path path="${plugins}"/>
-                                            <map from="" to="file://"/>
+                                            <map from="" to="file:///"/>
                                         </pathconvert>
                                         <pathconvert pathsep=" " property="bundles">
                                             <path path="${plugins}"/>
@@ -73,13 +76,13 @@
                                             </mapper>
                                         </pathconvert>
                                         <echo file="${project.build.directory}/run.properties">
-                                            felix.auto.install=${urls}
-                                            felix.auto.start=file://${project.build.directory}/${project.artifactId}-${project.version}.jar
-                                            org.osgi.framework.storage=${project.build.directory}/felix-cache
+                                            felix.auto.install="${urls}"
+                                            felix.auto.start="file:///${project.build.url}/${project.artifactId}-${project.version}.jar"
+                                            org.osgi.framework.storage=${project.build.url}/felix-cache
                                             org.osgi.framework.bootdelegation=*
                                         </echo>
                                         <echo file="${project.build.directory}/config.properties">
-                                            felix.auto.install=${bundles}
+                                            felix.auto.install="${bundles}"
                                             felix.auto.start=file:modules/${project.artifactId}-${project.version}.jar
                                         </echo>
                                         <copy file="${maven.dependency.org.apache.felix.org.apache.felix.main.jar.path}" tofile="${project.build.directory}/felix.jar"/>
