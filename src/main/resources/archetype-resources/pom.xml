@@ -62,10 +62,9 @@
                                         <pathconvert pathsep=" " dirsep="/" property="project.build.url">
                                             <path path="${project.build.directory}"/>
                                         </pathconvert>
-                                        <pathconvert pathsep='" "' dirsep="/" property="urls">
+                                        <makeurl property="urls" separator=" " validate="false">
                                             <path path="${plugins}"/>
-                                            <map from="" to="file:///"/>
-                                        </pathconvert>
+                                        </makeurl>
                                         <pathconvert pathsep=" " property="bundles">
                                             <path path="${plugins}"/>
                                             <mapper>
@@ -75,12 +74,14 @@
                                                 </chainedmapper>
                                             </mapper>
                                         </pathconvert>
+                                        <makeurl property="main.bundle.url" file="${project.build.directory}/${project.artifactId}-${project.version}.jar"/>
                                         <echo file="${project.build.directory}/run.properties">
                                             felix.auto.install="${urls}"
-                                            felix.auto.start="file:///${project.build.url}/${project.artifactId}-${project.version}.jar"
+                                            felix.auto.start=${main.bundle.url}
                                             org.osgi.framework.storage=${project.build.url}/felix-cache
                                             org.osgi.framework.bootdelegation=*
                                         </echo>
+                                        <replace file="${project.build.directory}/run.properties" token="\" value="\\"/>
                                         <echo file="${project.build.directory}/config.properties">
                                             felix.auto.install="${bundles}"
                                             felix.auto.start=file:modules/${project.artifactId}-${project.version}.jar
