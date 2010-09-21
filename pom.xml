@@ -8,6 +8,6 @@
   <artifactId>nbm-osgi-archetype</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
-  <name>NetBeans Module Archetype with OSGi support</name>
+  <name>NetBeans OSGi Module Archetype</name>
   <description>Archetype for development of NetBeans modules that can depend on OSGi bundles.</description>
 </project>
