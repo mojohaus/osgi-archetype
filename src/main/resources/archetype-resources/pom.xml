@@ -7,7 +7,7 @@
     <version>${version}</version>
     <packaging>nbm</packaging>
 
-    <name>Netbeans Module ${artifactId}</name>
+    <name>NetBeans Module ${artifactId}</name>
 
     <repositories>
         <!-- this is a remote repository hosting the netbeans api artifacts.
@@ -21,15 +21,6 @@
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
-        </repository>
-
-        <repository>
-            <id>netbeans.snapshot</id>
-            <name>repository hosting netbeans.org api snapshot artifacts</name>
-            <url>http://bits.netbeans.org/netbeans/trunk/maven-snapshot</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
         </repository>
     </repositories>
 
