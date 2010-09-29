@@ -26,8 +26,7 @@
     </repositories>
 
     <dependencies>
-        <!-- netbeans module that enables ogsi support at runtime,
-             now your module can depend on bundles. -->
+        <!-- NetBeans wrapper of OSGi Core, so your module can depend on bundles -->
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-libs-osgi</artifactId>
@@ -48,7 +47,7 @@
                 </configuration>
             </plugin>
 
-            <!-- netbeans modules in 6.9+ are 1.6 compatible -->
+            <!-- NetBeans 6.9+ requires JDK 6 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
