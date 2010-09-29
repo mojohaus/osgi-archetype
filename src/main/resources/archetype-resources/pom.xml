@@ -30,7 +30,7 @@
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-libs-osgi</artifactId>
-            <version>RELEASE691</version>
+            <version>${netbeansVersion}</version>
         </dependency>
     </dependencies>
 
