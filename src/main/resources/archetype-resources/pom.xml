@@ -1,3 +1,4 @@
+#set( $D = '$' )
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
@@ -67,17 +68,17 @@
                                     <tasks>
                                         <property name="plugins" refid="maven.runtime.classpath"/>
                                         <pathconvert pathsep=" " dirsep="/" property="project.build.url">
-                                            <path path="${project.build.directory}"/>
+                                            <path path="${D}{project.build.directory}"/>
                                         </pathconvert>
                                         <pathconvert property="plugins.jars" pathsep=":">
-                                            <path path="${plugins}"/>
-                                            <map from="${project.build.directory}/classes" to=""/>
+                                            <path path="${D}{plugins}"/>
+                                            <map from="${D}{project.build.directory}/classes" to=""/>
                                         </pathconvert>
                                         <makeurl property="urls" separator=" " validate="false">
-                                            <path path="${plugins.jars}"/>
+                                            <path path="${D}{plugins.jars}"/>
                                         </makeurl>
                                         <pathconvert pathsep=" " property="bundles">
-                                            <path path="${plugins}"/>
+                                            <path path="${D}{plugins}"/>
                                             <mapper>
                                                 <chainedmapper>
                                                     <flattenmapper/>
@@ -85,19 +86,19 @@
                                                 </chainedmapper>
                                             </mapper>
                                         </pathconvert>
-                                        <makeurl property="main.bundle.url" file="${project.build.directory}/${project.artifactId}-${project.version}.jar"/>
-                                        <echo file="${project.build.directory}/run.properties">
-                                            felix.auto.install=${urls}
-                                            felix.auto.start=${main.bundle.url}
-                                            org.osgi.framework.storage=${project.build.url}/felix-cache
+                                        <makeurl property="main.bundle.url" file="${D}{project.build.directory}/${D}{project.artifactId}-${D}{project.version}.jar"/>
+                                        <echo file="${D}{project.build.directory}/run.properties">
+                                            felix.auto.install=${D}{urls}
+                                            felix.auto.start=${D}{main.bundle.url}
+                                            org.osgi.framework.storage=${D}{project.build.url}/felix-cache
                                             org.osgi.framework.bootdelegation=*
                                         </echo>
-                                        <replace file="${project.build.directory}/run.properties" token="\" value="\\"/>
-                                        <echo file="${project.build.directory}/config.properties">
-                                            felix.auto.install="${bundles}"
-                                            felix.auto.start=file:modules/${project.artifactId}-${project.version}.jar
+                                        <replace file="${D}{project.build.directory}/run.properties" token="\" value="\\"/>
+                                        <echo file="${D}{project.build.directory}/config.properties">
+                                            felix.auto.install="${D}{bundles}"
+                                            felix.auto.start=file:modules/${D}{project.artifactId}-${D}{project.version}.jar
                                         </echo>
-                                        <copy file="${maven.dependency.org.apache.felix.org.apache.felix.main.jar.path}" tofile="${project.build.directory}/felix.jar"/>
+                                        <copy file="${D}{maven.dependency.org.apache.felix.org.apache.felix.main.jar.path}" tofile="${D}{project.build.directory}/felix.jar"/>
                                     </tasks>
                                 </configuration>
                             </execution>
@@ -116,9 +117,9 @@
                                 </goals>
                                 <configuration>
                                     <descriptors>
-                                        <descriptor>${basedir}/src/main/assembly/felix.xml</descriptor>
+                                        <descriptor>${D}{basedir}/src/main/assembly/felix.xml</descriptor>
                                     </descriptors>
-                                    <finalName>${project.artifactId}-${project.version}</finalName>
+                                    <finalName>${D}{project.artifactId}-${D}{project.version}</finalName>
                                 </configuration>
                             </execution>
                         </executions>
