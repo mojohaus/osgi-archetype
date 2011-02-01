@@ -12,17 +12,10 @@
           <exclude>org.apache.felix:org.apache.felix.main</exclude>
         </excludes>
     </dependencySet>
-    <dependencySet>
-        <useProjectArtifact>false</useProjectArtifact>
-        <outputDirectory></outputDirectory>
-        <includes>
-          <include>org.apache.felix:org.apache.felix.main</include>
-        </includes>
-    </dependencySet>
   </dependencySets>
   <files>
     <file>
-      <source>${project.build.directory}/${project.artifactId}-${project.version}.jar</source>
+      <source>${project.build.directory}/${project.build.finalName}.jar</source>
       <outputDirectory>modules</outputDirectory>
     </file>
     <file>

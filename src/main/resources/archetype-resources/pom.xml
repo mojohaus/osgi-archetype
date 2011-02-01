@@ -27,7 +27,7 @@
             <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
-                <version>2.1.0</version>
+                <version>2.2.0</version>
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
@@ -40,50 +40,43 @@
 
     <profiles>
         <profile>
-            <!-- this profile executes the bundle on apache felix-->
-            <id>run-on-felix</id>
+            <id>build-for-felix</id>
             <dependencies>
                 <dependency>
                     <groupId>org.apache.felix</groupId>
                     <artifactId>org.apache.felix.main</artifactId>
-                    <version>3.0.3</version>
+                    <version>3.0.7</version>
                     <scope>provided</scope>
                 </dependency>
+                <!-- To include a shell:
                 <dependency>
-                    <groupId>org.apache.felix.gogo</groupId>
-                    <artifactId>org.apache.felix.gogo.commands</artifactId>
-                    <version>0.4.0</version>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>org.apache.felix.gogo.shell</artifactId>
+                    <version>0.6.1</version>
                 </dependency>
+                -->
             </dependencies>
-
             <build>
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-antrun-plugin</artifactId>
-                        <version>1.5</version>
+                        <version>1.6</version>
                         <executions>
                             <execution>
                                 <id>compile</id>
-                                <phase>compile</phase>
+                                <phase>package</phase>
                                 <goals>
                                     <goal>run</goal>
                                 </goals>
                                 <configuration>
                                     <target>
-                                        <property name="plugins" refid="maven.runtime.classpath"/>
-                                        <pathconvert pathsep=" " dirsep="/" property="project.build.url">
-                                            <path path="${D}{project.build.directory}"/>
+                                        <pathconvert property="plugins.jars" pathsep="${D}{path.separator}">
+                                            <path refid="maven.runtime.classpath"/>
+                                            <map from="${D}{project.build.directory}${D}{file.separator}classes" to=""/>
                                         </pathconvert>
-                                        <pathconvert property="plugins.jars" pathsep=":">
-                                            <path path="${D}{plugins}"/>
-                                            <map from="${D}{project.build.directory}/classes" to=""/>
-                                        </pathconvert>
-                                        <makeurl property="urls" separator=" " validate="false">
-                                            <path path="${D}{plugins.jars}"/>
-                                        </makeurl>
                                         <pathconvert pathsep=" " property="bundles">
-                                            <path path="${D}{plugins}"/>
+                                            <path path="${D}{plugins.jars}"/>
                                             <mapper>
                                                 <chainedmapper>
                                                     <flattenmapper/>
@@ -91,19 +84,10 @@
                                                 </chainedmapper>
                                             </mapper>
                                         </pathconvert>
-                                        <makeurl property="main.bundle.url" file="${D}{project.build.directory}/${D}{project.artifactId}-${D}{project.version}.jar"/>
-                                        <echo file="${D}{project.build.directory}/run.properties">
-                                            felix.auto.install=${D}{urls}
-                                            felix.auto.start=${D}{main.bundle.url}
-                                            org.osgi.framework.storage=${D}{project.build.url}/felix-cache
-                                            org.osgi.framework.bootdelegation=*
-                                        </echo>
-                                        <replace file="${D}{project.build.directory}/run.properties" token="\" value="\\"/>
-## Why do we need both run.properties and config.properties?
-                                        <echo file="${D}{project.build.directory}/config.properties">
-                                            felix.auto.install="${D}{bundles}"
-                                            felix.auto.start=file:modules/${D}{project.artifactId}-${D}{project.version}.jar
-                                        </echo>
+                                        <propertyfile file="${D}{project.build.directory}/config.properties">
+                                            <entry key="felix.auto.start" value="${D}{bundles} file:modules/${D}{project.build.finalName}.jar"/>
+                                            <entry key="org.osgi.framework.bootdelegation" value="*"/>
+                                        </propertyfile>
                                         <copy file="${D}{maven.dependency.org.apache.felix.org.apache.felix.main.jar.path}" tofile="${D}{project.build.directory}/felix.jar"/>
                                     </target>
                                 </configuration>
@@ -113,7 +97,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-assembly-plugin</artifactId>
-                        <version>2.2-beta-5</version>
+                        <version>2.2</version>
                         <executions>
                             <execution>
                                 <id>create-executable-jar</id>
@@ -125,10 +109,54 @@
                                     <descriptors>
                                         <descriptor>${D}{basedir}/src/main/assembly/felix.xml</descriptor>
                                     </descriptors>
-                                    <finalName>${D}{project.artifactId}-${D}{project.version}</finalName>
+                                    <finalName>${D}{project.build.finalName}</finalName>
                                 </configuration>
                             </execution>
                         </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>run-on-felix</id>
+            <dependencies>
+                <dependency>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>org.apache.felix.main</artifactId>
+                    <version>3.0.7</version>
+                    <scope>provided</scope>
+                </dependency>
+                <!-- org.apache.felix:org.apache.felix.gogo.shell:0.6.1 useless from Maven since stdin is swallowed -->
+            </dependencies>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <version>1.6</version>
+                        <configuration>
+                            <target>
+                                <property name="vm.args" value=""/>
+                                <pathconvert property="plugins.jars" pathsep="${D}{path.separator}">
+                                    <path refid="maven.runtime.classpath"/>
+                                    <map from="${D}{project.build.directory}${D}{file.separator}classes" to=""/>
+                                </pathconvert>
+                                <makeurl property="urls" separator=" ">
+                                    <path path="${D}{plugins.jars}"/>
+                                    <path location="${D}{project.build.directory}/${D}{project.build.finalName}.jar"/>
+                                </makeurl>
+                                <propertyfile file="${D}{project.build.directory}/run.properties">
+                                    <entry key="felix.auto.start" value="${D}{urls}"/>
+                                    <entry key="org.osgi.framework.storage" value="${D}{project.build.directory}${D}{file.separator}felix-cache"/>
+                                    <entry key="org.osgi.framework.bootdelegation" value="*"/>
+                                </propertyfile>
+                                <makeurl property="run.properties.url" file="${D}{project.build.directory}/run.properties"/>
+                                <java fork="true" jar="${D}{maven.dependency.org.apache.felix.org.apache.felix.main.jar.path}">
+                                    <sysproperty key="felix.config.properties" value="${D}{run.properties.url}"/>
+                                    <jvmarg line="${D}{vm.args}"/>
+                                </java>
+                            </target>
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>
