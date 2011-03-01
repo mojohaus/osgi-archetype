@@ -8,9 +8,6 @@
     <dependencySet>
         <useProjectArtifact>false</useProjectArtifact>
         <outputDirectory>modules</outputDirectory>
-        <excludes>
-          <exclude>org.apache.felix:org.apache.felix.main</exclude>
-        </excludes>
     </dependencySet>
   </dependencySets>
   <files>
