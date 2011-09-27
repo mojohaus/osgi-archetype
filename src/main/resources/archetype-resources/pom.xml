@@ -33,6 +33,7 @@
                 <configuration>
                     <instructions>
                         <Bundle-Activator>${package}.Activator</Bundle-Activator>
+                        <Export-Package/>
                     </instructions>
                 </configuration>
             </plugin>
