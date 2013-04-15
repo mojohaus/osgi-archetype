@@ -34,6 +34,11 @@
                     <instructions>
                         <Bundle-Activator>${package}.Activator</Bundle-Activator>
                         <Export-Package/>
+                        <!-- When Developing bundles consumed in NetBeans platform application, see 
+                             http://jira.codehaus.org/browse/MNBMODULE-208 and 
+                             http://mojo.codehaus.org/nbm-maven/nbm-maven-plugin/
+                          <Nbm-Maven-Plugin-Autoload>false<<Nbm-Maven-Plugin-Autoload>
+                          -->
                     </instructions>
                 </configuration>
             </plugin>
